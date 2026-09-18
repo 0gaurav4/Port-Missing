@@ -7,10 +7,36 @@ export interface GenericParsedTable {
   portColumnName: string;
   deviceColumnIndex?: number;
   deviceColumnName?: string;
+  operStatusColumnIndex?: number;
+  operStatusColumnName?: string;
+  adminStatusColumnIndex?: number;
+  adminStatusColumnName?: string;
+  descriptionColumnIndex?: number;
+  descriptionColumnName?: string;
+  ipColumnIndex?: number;
+  ipColumnName?: string;
+  macColumnIndex?: number;
+  macColumnName?: string;
+}
+
+export interface PortAuditDetail {
+  portNumber: number;
+  portName: string;
+  isConfigured: boolean;
+  isMissing: boolean;
+  status: 'up' | 'down' | 'missing';
+  adminStatus?: string;
+  operStatus?: string;
+  description?: string;
+  macAddress?: string;
+  ipAddress?: string;
+  lastInput?: string;
+  lastOutput?: string;
+  rawRow?: Record<string, string>;
 }
 
 export interface ModuleMissingAudit {
-  moduleId: string;            // e.g. "Gi1/0"
+  moduleId: string;            // e.g. "FNR8-AS1-Gi1/0"
   modulePrefix: string;        // e.g. "Gi1/0"
   deviceName?: string;         // e.g. "CCS1N1F1FNR8AS1.cgv.nic.in"
   rackId?: string;             // e.g. "FNR8"
@@ -22,13 +48,37 @@ export interface ModuleMissingAudit {
   missingPortNumbers: number[];
   missingPortStrings: string[];
   missingRangesText: string;
-  allPortStatuses: {
-    portNumber: number;
-    portName: string;
-    isConfigured: boolean;
-    isMissing: boolean;
-  }[];
+  upPortNumbers: number[];
+  downPortNumbers: number[];
+  upPortStrings: string[];
+  downPortStrings: string[];
+  allPortStatuses: PortAuditDetail[];
   ciscoRangeCommand: string;
+}
+
+export interface RackAuditSummary {
+  rackId: string;              // e.g. "FNR8"
+  rackNumber: string;          // e.g. "8"
+  devices: string[];
+  totalExpectedPorts: number;
+  totalConfiguredPorts: number;
+  totalMissingPorts: number;
+  totalUpPorts: number;
+  totalDownPorts: number;
+  missingRangesText: string;
+  downPortsText: string;
+  modules: ModuleMissingAudit[];
+}
+
+export interface ComprehensiveAuditAnalysis {
+  modules: ModuleMissingAudit[];
+  racks: RackAuditSummary[];
+  totalMissingPorts: number;
+  totalDownPorts: number;
+  totalUpPorts: number;
+  totalConfiguredPorts: number;
+  totalExpectedPorts: number;
+  modulesWithMissingCount: number;
 }
 
 export interface RawAuditRow {

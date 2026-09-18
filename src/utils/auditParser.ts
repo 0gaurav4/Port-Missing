@@ -9,6 +9,9 @@ import {
   SwitchModuleAudit,
   GenericParsedTable,
   ModuleMissingAudit,
+  PortAuditDetail,
+  RackAuditSummary,
+  ComprehensiveAuditAnalysis,
 } from '../types';
 
 /**
@@ -788,6 +791,56 @@ export function parseGenericTableData(rawText: string): GenericParsedTable {
     }
   }
 
+  // Identify Operational Status column (e.g. "Operation", "Operational Status", "Oper Status", "Status", "State")
+  let operStatusColIdx = -1;
+  for (let c = 0; c < headers.length; c++) {
+    const h = headers[c].toLowerCase();
+    if (h === 'operation' || h === 'operational status' || h === 'oper status' || h === 'oper' || h === 'status' || h === 'state') {
+      operStatusColIdx = c;
+      break;
+    }
+  }
+
+  // Identify Admin Status column (e.g. "Admin Status", "Admin")
+  let adminStatusColIdx = -1;
+  for (let c = 0; c < headers.length; c++) {
+    const h = headers[c].toLowerCase();
+    if (h === 'admin status' || h === 'admin' || h === 'adminstate') {
+      adminStatusColIdx = c;
+      break;
+    }
+  }
+
+  // Identify Description column
+  let descColIdx = -1;
+  for (let c = 0; c < headers.length; c++) {
+    const h = headers[c].toLowerCase();
+    if (h.includes('desc') || h.includes('remark') || h.includes('comment') || h.includes('label')) {
+      descColIdx = c;
+      break;
+    }
+  }
+
+  // Identify IP Address column
+  let ipColIdx = -1;
+  for (let c = 0; c < headers.length; c++) {
+    const h = headers[c].toLowerCase();
+    if (h.includes('ip address') || h === 'ip' || h.includes('ipv4')) {
+      ipColIdx = c;
+      break;
+    }
+  }
+
+  // Identify MAC Address column
+  let macColIdx = -1;
+  for (let c = 0; c < headers.length; c++) {
+    const h = headers[c].toLowerCase();
+    if (h.includes('mac') || h.includes('hardware')) {
+      macColIdx = c;
+      break;
+    }
+  }
+
   // Construct structured rows
   const structuredRows: Record<string, string>[] = [];
   dataLines.forEach(lineCols => {
@@ -808,37 +861,82 @@ export function parseGenericTableData(rawText: string): GenericParsedTable {
     portColumnName: headers[portColIdx] || 'Port',
     deviceColumnIndex: deviceColIdx >= 0 ? deviceColIdx : undefined,
     deviceColumnName: deviceColIdx >= 0 ? headers[deviceColIdx] : undefined,
+    operStatusColumnIndex: operStatusColIdx >= 0 ? operStatusColIdx : undefined,
+    operStatusColumnName: operStatusColIdx >= 0 ? headers[operStatusColIdx] : undefined,
+    adminStatusColumnIndex: adminStatusColIdx >= 0 ? adminStatusColIdx : undefined,
+    adminStatusColumnName: adminStatusColIdx >= 0 ? headers[adminStatusColIdx] : undefined,
+    descriptionColumnIndex: descColIdx >= 0 ? descColIdx : undefined,
+    descriptionColumnName: descColIdx >= 0 ? headers[descColIdx] : undefined,
+    ipColumnIndex: ipColIdx >= 0 ? ipColIdx : undefined,
+    ipColumnName: ipColIdx >= 0 ? headers[ipColIdx] : undefined,
+    macColumnIndex: macColIdx >= 0 ? macColIdx : undefined,
+    macColumnName: macColIdx >= 0 ? headers[macColIdx] : undefined,
   };
 }
 
 /**
- * Analyzes parsed generic table rows to identify missing port numbers per module/switch
+ * Helper to determine operational status ('up' | 'down') from row string
+ */
+function inferOperationalStatus(statusStr?: string): 'up' | 'down' {
+  if (!statusStr) return 'up';
+  const s = statusStr.trim().toLowerCase();
+  if (
+    s === 'down' ||
+    s.startsWith('down') ||
+    s.includes('notconnect') ||
+    s.includes('err-disable') ||
+    s.includes('disabled') ||
+    s.includes('shutdown') ||
+    s.includes('inactive') ||
+    s.includes('fault')
+  ) {
+    return 'down';
+  }
+  return 'up';
+}
+
+/**
+ * Analyzes parsed generic table rows to identify missing, down, and up ports per rack and module
  */
 export function analyzeModulesMissingPorts(
   table: GenericParsedTable,
   capacityMode: SwitchCapacityMode = 'auto'
-): {
-  modules: ModuleMissingAudit[];
-  totalMissingPorts: number;
-  modulesWithMissingCount: number;
-  totalConfiguredPorts: number;
-  totalExpectedPorts: number;
-} {
+): ComprehensiveAuditAnalysis {
   if (!table || table.rows.length === 0 || table.portColumnIndex < 0) {
     return {
       modules: [],
+      racks: [],
       totalMissingPorts: 0,
-      modulesWithMissingCount: 0,
+      totalDownPorts: 0,
+      totalUpPorts: 0,
       totalConfiguredPorts: 0,
       totalExpectedPorts: 0,
+      modulesWithMissingCount: 0,
     };
   }
 
   const portCol = table.portColumnName;
   const devCol = table.deviceColumnName;
+  const operCol = table.operStatusColumnName;
+  const adminCol = table.adminStatusColumnName;
+  const descCol = table.descriptionColumnName;
+  const ipCol = table.ipColumnName;
+  const macCol = table.macColumnName;
 
   // Group ports by module prefix (e.g. Gi1/0, Gi2/0, Gi3/0, Te1/1, etc.)
   // and device if present
+  interface ConfiguredPortEntry {
+    rawPort: string;
+    operStatus: 'up' | 'down';
+    adminStatus?: string;
+    description?: string;
+    ipAddress?: string;
+    macAddress?: string;
+    lastInput?: string;
+    lastOutput?: string;
+    rawRow: Record<string, string>;
+  }
+
   interface ModuleGroupData {
     moduleId: string;
     modulePrefix: string;
@@ -848,7 +946,7 @@ export function analyzeModulesMissingPorts(
     switchUnit: number;
     moduleSlot: number;
     interfaceType: string;
-    configuredPortsMap: Map<number, string>;
+    configuredPortsMap: Map<number, ConfiguredPortEntry>;
     maxPortSeen: number;
   }
 
@@ -889,7 +987,39 @@ export function analyzeModulesMissingPorts(
     }
 
     const group = moduleMap.get(key)!;
-    group.configuredPortsMap.set(parsedPort.portNumber, parsedPort.rawPort);
+
+    // Detect operational status from dedicated column or any column containing 'up'/'down'
+    let rawOper = operCol ? row[operCol] : undefined;
+    if (!rawOper) {
+      // Look through row keys for operation/status
+      for (const [k, v] of Object.entries(row)) {
+        if (/oper|status|state/i.test(k)) {
+          rawOper = v;
+          break;
+        }
+      }
+    }
+    const operStatus = inferOperationalStatus(rawOper);
+
+    const adminStatus = adminCol ? row[adminCol] : (row['Admin Status'] || undefined);
+    const description = descCol ? row[descCol] : (row['Description'] || undefined);
+    const ipAddress = ipCol ? row[ipCol] : (row['IP Address'] || undefined);
+    const macAddress = macCol ? row[macCol] : (row['MAC Address'] || undefined);
+    const lastInput = row['Last Input'] || undefined;
+    const lastOutput = row['Last Output'] || undefined;
+
+    group.configuredPortsMap.set(parsedPort.portNumber, {
+      rawPort: parsedPort.rawPort,
+      operStatus,
+      adminStatus,
+      description,
+      ipAddress,
+      macAddress,
+      lastInput,
+      lastOutput,
+      rawRow: row,
+    });
+
     if (parsedPort.portNumber > group.maxPortSeen) {
       group.maxPortSeen = parsedPort.portNumber;
     }
@@ -898,6 +1028,8 @@ export function analyzeModulesMissingPorts(
   const modulesList: ModuleMissingAudit[] = [];
   let globalMissingCount = 0;
   let globalConfiguredCount = 0;
+  let globalUpCount = 0;
+  let globalDownCount = 0;
   let globalExpectedCount = 0;
   let modulesWithMissing = 0;
 
@@ -923,22 +1055,42 @@ export function analyzeModulesMissingPorts(
     const configuredNums: number[] = [];
     const missingNums: number[] = [];
     const missingStrings: string[] = [];
-    const allStatuses: {
-      portNumber: number;
-      portName: string;
-      isConfigured: boolean;
-      isMissing: boolean;
-    }[] = [];
+    const upNums: number[] = [];
+    const downNums: number[] = [];
+    const upStrings: string[] = [];
+    const downStrings: string[] = [];
+    const allStatuses: PortAuditDetail[] = [];
 
     for (let p = 1; p <= capacity; p++) {
       const portName = `${group.modulePrefix}/${p}`;
-      if (group.configuredPortsMap.has(p)) {
+      const entry = group.configuredPortsMap.get(p);
+
+      if (entry) {
         configuredNums.push(p);
+        if (entry.operStatus === 'down') {
+          downNums.push(p);
+          downStrings.push(portName);
+          globalDownCount++;
+        } else {
+          upNums.push(p);
+          upStrings.push(portName);
+          globalUpCount++;
+        }
+
         allStatuses.push({
           portNumber: p,
           portName,
           isConfigured: true,
           isMissing: false,
+          status: entry.operStatus,
+          adminStatus: entry.adminStatus,
+          operStatus: entry.operStatus,
+          description: entry.description,
+          ipAddress: entry.ipAddress,
+          macAddress: entry.macAddress,
+          lastInput: entry.lastInput,
+          lastOutput: entry.lastOutput,
+          rawRow: entry.rawRow,
         });
       } else {
         missingNums.push(p);
@@ -948,6 +1100,7 @@ export function analyzeModulesMissingPorts(
           portName,
           isConfigured: false,
           isMissing: true,
+          status: 'missing',
         });
       }
     }
@@ -955,7 +1108,6 @@ export function analyzeModulesMissingPorts(
     const missingRangesText = formatNumberRanges(missingNums);
 
     // Build Cisco CLI interface range command
-    // e.g. "interface range GigabitEthernet1/0/5 - 6, GigabitEthernet1/0/13"
     let ciscoRangeCommand = '';
     if (missingNums.length > 0) {
       const ranges = missingRangesText.split(', ').map(r => {
@@ -989,6 +1141,10 @@ export function analyzeModulesMissingPorts(
       missingPortNumbers: missingNums,
       missingPortStrings: missingStrings,
       missingRangesText,
+      upPortNumbers: upNums,
+      downPortNumbers: downNums,
+      upPortStrings: upStrings,
+      downPortStrings: downStrings,
       allPortStatuses: allStatuses,
       ciscoRangeCommand,
     });
@@ -1005,12 +1161,85 @@ export function analyzeModulesMissingPorts(
     return a.moduleSlot - b.moduleSlot;
   });
 
+  // Group into RackAuditSummary[]
+  const rackMap = new Map<string, {
+    rackId: string;
+    rackNumber: string;
+    devices: Set<string>;
+    modules: ModuleMissingAudit[];
+    totalExpectedPorts: number;
+    totalConfiguredPorts: number;
+    totalMissingPorts: number;
+    totalUpPorts: number;
+    totalDownPorts: number;
+    missingPortsCombined: number[];
+    downPortsCombined: string[];
+  }>();
+
+  modulesList.forEach(mod => {
+    const rId = mod.rackId || 'General Rack';
+    const numMatch = rId.match(/\d+/);
+    const rNum = numMatch ? numMatch[0] : '1';
+
+    if (!rackMap.has(rId)) {
+      rackMap.set(rId, {
+        rackId: rId,
+        rackNumber: rNum,
+        devices: new Set(),
+        modules: [],
+        totalExpectedPorts: 0,
+        totalConfiguredPorts: 0,
+        totalMissingPorts: 0,
+        totalUpPorts: 0,
+        totalDownPorts: 0,
+        missingPortsCombined: [],
+        downPortsCombined: [],
+      });
+    }
+
+    const rGroup = rackMap.get(rId)!;
+    if (mod.deviceName) {
+      rGroup.devices.add(mod.deviceName);
+    }
+    rGroup.modules.push(mod);
+    rGroup.totalExpectedPorts += mod.capacity;
+    rGroup.totalConfiguredPorts += mod.configuredPortNumbers.length;
+    rGroup.totalMissingPorts += mod.missingPortNumbers.length;
+    rGroup.totalUpPorts += mod.upPortNumbers.length;
+    rGroup.totalDownPorts += mod.downPortNumbers.length;
+    rGroup.missingPortsCombined.push(...mod.missingPortNumbers);
+    rGroup.downPortsCombined.push(...mod.downPortStrings);
+  });
+
+  const racksSummaryList: RackAuditSummary[] = [];
+  rackMap.forEach(r => {
+    racksSummaryList.push({
+      rackId: r.rackId,
+      rackNumber: r.rackNumber,
+      devices: Array.from(r.devices),
+      totalExpectedPorts: r.totalExpectedPorts,
+      totalConfiguredPorts: r.totalConfiguredPorts,
+      totalMissingPorts: r.totalMissingPorts,
+      totalUpPorts: r.totalUpPorts,
+      totalDownPorts: r.totalDownPorts,
+      missingRangesText: formatNumberRanges(r.missingPortsCombined),
+      downPortsText: r.downPortsCombined.join(', ') || 'None',
+      modules: r.modules,
+    });
+  });
+
+  // Sort racks naturally: e.g. FNR5 before FNR8
+  racksSummaryList.sort((a, b) => a.rackId.localeCompare(b.rackId, undefined, { numeric: true }));
+
   return {
     modules: modulesList,
+    racks: racksSummaryList,
     totalMissingPorts: globalMissingCount,
-    modulesWithMissingCount: modulesWithMissing,
+    totalDownPorts: globalDownCount,
+    totalUpPorts: globalUpCount,
     totalConfiguredPorts: globalConfiguredCount,
     totalExpectedPorts: globalExpectedCount,
+    modulesWithMissingCount: modulesWithMissing,
   };
 }
 

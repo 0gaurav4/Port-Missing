@@ -1,115 +1,126 @@
-// 112 rows of Cisco switchport data matching the screenshot from switchport.streamlit.app
-// Columns: Port, Col2 (Max Secure Addr), Col3 (Current Addr), Col4 (SecurityViolation), Action (ViolationAction)
+// Audit dataset matching the user's Excel audit sheet:
+// Columns: Sl.No | Device Name | Device Family | Device Type | IP Address | Port Name | Description | MAC Address | Admin Status | Operation | Last Input | Last Output
 
-export const SAMPLE_PORT_SECURITY_TEXT = `Gi1/0/1    2    1    13189    Restrict
-Gi1/0/2    1    1    689394   Restrict
-Gi1/0/3    1    1    0        Restrict
-Gi1/0/4    1    0    0        Restrict
-Gi1/0/7    1    1    0        Restrict
-Gi1/0/8    1    1    0        Restrict
-Gi1/0/9    1    0    0        Restrict
-Gi1/0/10   1    0    0        Restrict
-Gi1/0/11   1    0    0        Restrict
-Gi1/0/12   1    1    0        Restrict
-Gi1/0/13   1    1    0        Restrict
-Gi1/0/14   1    0    0        Restrict
-Gi1/0/15   1    1    0        Restrict
-Gi1/0/16   1    1    0        Restrict
-Gi1/0/17   1    1    0        Restrict
-Gi1/0/18   1    0    0        Restrict
-Gi1/0/19   1    1    0        Restrict
-Gi1/0/20   1    1    0        Restrict
-Gi1/0/21   1    1    0        Restrict
-Gi1/0/22   1    0    0        Restrict
-Gi1/0/23   1    1    0        Restrict
-Gi1/0/24   1    1    0        Restrict
-Gi1/0/25   1    1    0        Restrict
-Gi1/0/26   1    0    0        Restrict
-Gi1/0/27   1    1    0        Restrict
-Gi1/0/28   1    1    0        Restrict
-Gi1/0/29   1    1    0        Restrict
-Gi1/0/30   1    0    0        Restrict
-Gi1/0/31   1    1    0        Restrict
-Gi1/0/32   1    1    0        Restrict
-Gi1/0/33   1    1    0        Restrict
-Gi1/0/34   1    0    0        Restrict
-Gi1/0/35   1    1    0        Restrict
-Gi1/0/36   1    1    0        Restrict
-Gi1/0/37   1    1    0        Restrict
-Gi1/0/38   1    0    0        Restrict
-Gi1/0/39   1    1    0        Restrict
-Gi1/0/40   1    1    0        Restrict
-Gi1/0/41   1    1    0        Restrict
-Gi1/0/42   1    0    0        Restrict
-Gi1/0/43   1    1    0        Restrict
-Gi1/0/44   1    1    0        Restrict
-Gi1/0/47   1    1    0        Restrict
-Gi1/0/48   1    1    0        Restrict
-Gi2/0/1    2    1    0        Restrict
-Gi2/0/2    1    1    0        Restrict
-Gi2/0/3    1    1    0        Restrict
-Gi2/0/4    1    0    0        Restrict
-Gi2/0/5    1    1    0        Restrict
-Gi2/0/6    1    1    0        Restrict
-Gi2/0/9    1    0    0        Restrict
-Gi2/0/10   1    0    0        Restrict
-Gi2/0/11   1    0    0        Restrict
-Gi2/0/12   1    1    0        Restrict
-Gi2/0/13   1    1    0        Restrict
-Gi2/0/14   1    0    0        Restrict
-Gi2/0/15   1    1    0        Restrict
-Gi2/0/16   1    1    0        Restrict
-Gi2/0/17   1    1    0        Restrict
-Gi2/0/18   1    0    0        Restrict
-Gi2/0/19   1    1    0        Restrict
-Gi2/0/20   1    1    0        Restrict
-Gi2/0/21   1    1    0        Restrict
-Gi2/0/22   1    0    0        Restrict
-Gi2/0/23   1    1    0        Restrict
-Gi2/0/24   1    1    0        Restrict
-Gi2/0/25   1    1    0        Restrict
-Gi2/0/26   1    0    0        Restrict
-Gi2/0/27   1    1    0        Restrict
-Gi2/0/28   1    1    0        Restrict
-Gi2/0/31   1    1    0        Restrict
-Gi2/0/32   1    1    0        Restrict
-Gi2/0/33   1    1    0        Restrict
-Gi2/0/34   1    0    0        Restrict
-Gi2/0/35   1    1    0        Restrict
-Gi2/0/36   1    1    0        Restrict
-Gi2/0/37   1    1    0        Restrict
-Gi2/0/38   1    0    0        Restrict
-Gi2/0/41   1    1    0        Restrict
-Gi2/0/42   1    1    0        Restrict
-Gi2/0/43   1    1    0        Restrict
-Gi2/0/44   1    1    0        Restrict
-Gi2/0/45   1    1    0        Restrict
-Gi2/0/46   1    0    0        Restrict
-Gi3/0/1    1    1    0        Restrict
-Gi3/0/2    1    1    0        Restrict
-Gi3/0/3    1    1    0        Restrict
-Gi3/0/4    1    0    0        Restrict
-Gi3/0/5    1    1    0        Restrict
-Gi3/0/6    1    1    0        Restrict
-Gi3/0/7    1    0    0        Restrict
-Gi3/0/8    1    1    0        Restrict
-Gi3/0/11   1    1    0        Restrict
-Gi3/0/12   1    1    0        Restrict
-Gi3/0/13   1    0    0        Restrict
-Gi3/0/14   1    1    0        Restrict
-Gi3/0/15   1    1    0        Restrict
-Gi3/0/16   1    1    0        Restrict
-Gi3/0/17   1    0    0        Restrict
-Gi3/0/18   1    1    0        Restrict
-Gi3/0/19   1    1    0        Restrict
-Gi3/0/20   1    1    0        Restrict
-Gi3/0/21   1    0    0        Restrict
-Gi3/0/22   1    1    0        Restrict
-Gi3/0/23   1    1    0        Restrict
-Gi3/0/24   1    1    0        Restrict
-Gi3/0/25   1    0    0        Restrict
-Gi3/0/26   1    1    0        Restrict
-Gi3/0/27   1    1    0        Restrict
-Gi3/0/28   1    1    0        Restrict
-Gi3/0/39   1    1    0        Restrict
-Gi3/0/40   1    1    0        Restrict`;
+export const SAMPLE_PORT_SECURITY_TEXT = [
+  'Sl.No\tDevice Name\tDevice Family\tDevice Type\tIP Address\tPort Name\tDescription\tMAC Address\tAdmin Status\tOperation\tLast Input\tLast Output',
+  // Rack FNR8 (Device: CCS1N1F1FNR8AS1.cgv.nic.in)
+  '1\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet1/0/47\t\t9c:66:97:a4:e1:81\tUP\tup\t53:43.0\t53:49.0',
+  '2\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet1/0/46\t\t9c:66:97:a4:e1:81\tUP\tup\t53:42.0\t53:49.0',
+  '3\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet1/0/45\t\t9c:66:97:a4:e1:81\tUP\tup\t53:36.0\t53:49.0',
+  '4\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet1/0/44\t\t9c:66:97:a4:e1:81\tUP\tup\t53:47.0\t53:49.0',
+  '5\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet1/0/41\t\t9c:66:97:a4:e1:81\tUP\tup\t53:44.0\t53:49.0',
+  '6\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/38\t\t28:6b:5c:ab:12:01\tUP\tup\t53:18.0\t53:48.0',
+  '7\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/39\t\t28:6b:5c:ab:12:01\tUP\tup\t53:20.0\t53:48.0',
+  '8\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/45\t\t28:6b:5c:ab:12:01\tUP\tdown\t20:55.0\t22:15.0',
+  '9\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/46\t\t28:6b:5c:ab:12:01\tUP\tup\t53:43.0\t53:48.0',
+  '10\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/47\t\t28:6b:5c:ab:12:01\tUP\tup\t53:34.0\t53:48.0',
+  '11\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/48\t\t28:6b:5c:ab:12:01\tUP\tup\t53:09.0\t53:48.0',
+  '12\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/43\t\t28:6b:5c:ab:12:01\tUP\tup\t53:15.0\t53:48.0',
+  '13\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/44\t\t28:6b:5c:ab:12:01\tUP\tup\t38:18.0\t53:46.0',
+  '14\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/40\t\t28:6b:5c:ab:12:01\tUP\tup\t52:48.0\t53:49.0',
+  '15\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tLoopback0\tFabric Node Router Loopback\t9c:66:97:a4:e1:81\tUP\tup\t53:48.0\t52:31.0',
+  '16\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/46\t\tc4:46:06:fb:33:19\tUP\tup\t53:03.0\t53:49.0',
+  '17\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/47\t\tc4:46:06:fb:33:19\tUP\tdown\t53:44.0\t53:48.0',
+  '18\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/48\t\tc4:46:06:fb:33:19\tUP\tup\t53:21.0\t53:48.0',
+  '19\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/42\t\tc4:46:06:fb:33:19\tUP\tup\t53:29.0\t53:48.0',
+  '20\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/43\t\tc4:46:06:fb:33:19\tUP\tup\t53:45.0\t53:48.0',
+  '21\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/44\t\tc4:46:06:fb:33:19\tUP\tdown\t24:24.0\t24:36.0',
+  '22\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/45\t\tc4:46:06:fb:33:19\tUP\tup\t53:24.0\t53:46.0',
+  '23\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/40\t\tc4:46:06:fb:33:19\tUP\tdown\t35:45.0\t05:00.0',
+  '24\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/41\t\tc4:46:06:fb:33:19\tUP\tup\t53:42.0\t53:48.0',
+  '25\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/40\t\t9c:66:97:a4:e1:81\tUP\tdown\t53:46.0\t53:47.0',
+  '26\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/37\t\tc4:46:06:fb:33:19\tUP\tup\t51:25.0\t53:48.0',
+  '27\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/38\t\tc4:46:06:fb:33:19\tUP\tup\t53:38.0\t53:48.0',
+  '28\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet2/0/39\t\tc4:46:06:fb:33:19\tUP\tdown\t49:08.0\t49:17.0',
+  '29\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/38\t\t9c:66:97:a4:e1:81\tUP\tup\t53:17.0\t53:49.0',
+  '30\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/39\t\t9c:66:97:a4:e1:81\tUP\tup\t53:00.0\t53:48.0',
+  '31\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/34\t\t9c:66:97:a4:e1:81\tUP\tup\t58:21.0\t53:46.0',
+  '32\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/35\t\t9c:66:97:a4:e1:81\tUP\tup\t53:07.0\t53:48.0',
+  '33\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/36\t\t9c:66:97:a4:e1:81\tUP\tdown\t31:49.0\t53:48.0',
+  '34\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/37\t\t9c:66:97:a4:e1:81\tUP\tup\t53:46.0\t53:49.0',
+  '35\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/30\t\t9c:66:97:a4:e1:81\tUP\tdown\t24:51.0\t24:53.0',
+  '36\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/31\t\t9c:66:97:a4:e1:81\tUP\tup\t53:38.0\t53:48.0',
+  '37\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/32\t\t9c:66:97:a4:e1:81\tUP\tup\t53:48.0\t53:49.0',
+  '38\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/18\t\t28:6b:5c:ab:12:01\tUP\tup\t53:44.0\t53:48.0',
+  '39\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/15\t\t28:6b:5c:ab:12:01\tUP\tup\t37:12.0\t53:46.0',
+  '40\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/10\t\t28:6b:5c:ab:12:01\tUP\tup\t53:32.0\t53:48.0',
+  '41\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/11\t\t28:6b:5c:ab:12:01\tUP\tdown\t53:39.0\t53:48.0',
+  '42\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/12\t\t28:6b:5c:ab:12:01\tUP\tup\t53:32.0\t53:48.0',
+  '43\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/13\t\t28:6b:5c:ab:12:01\tUP\tup\t52:24.0\t53:48.0',
+  '44\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/29\t\t9c:66:97:a4:e1:81\tUP\tup\t53:03.0\t53:48.0',
+  '45\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/25\t\t9c:66:97:a4:e1:81\tUP\tdown\t43:41.0\t43:50.0',
+  '46\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/26\t\t9c:66:97:a4:e1:81\tUP\tup\t50:18.0\t53:47.0',
+  '47\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/27\t\t9c:66:97:a4:e1:81\tUP\tup\t27:43.0\t53:46.0',
+  '48\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/28\t\t9c:66:97:a4:e1:81\tUP\tup\t53:36.0\t53:49.0',
+  '49\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/21\t\t9c:66:97:a4:e1:81\tUP\tup\t53:44.0\t53:49.0',
+  '50\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/22\t\t9c:66:97:a4:e1:81\tUP\tdown\t37:50.0\t38:07.0',
+  '51\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/23\t\t9c:66:97:a4:e1:81\tUP\tdown\t53:07.0\t53:12.0',
+  '52\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/24\t\t9c:66:97:a4:e1:81\tUP\tdown\t06:20.0\t52:40.0',
+  '53\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/27\t\t28:6b:5c:ab:12:01\tUP\tup\t53:05.0\t53:48.0',
+  '54\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/28\t\t28:6b:5c:ab:12:01\tUP\tup\t53:44.0\t53:48.0',
+  '55\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/24\t\t28:6b:5c:ab:12:01\tUP\tup\t53:36.0\t53:48.0',
+  '56\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/26\t\t28:6b:5c:ab:12:01\tUP\tdown\t07:17.0\t08:30.0',
+  '57\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/20\t\t28:6b:5c:ab:12:01\tUP\tup\t53:49.0\t53:48.0',
+  '58\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/21\t\t28:6b:5c:ab:12:01\tUP\tup\t53:03.0\t53:48.0',
+  '59\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/22\t\t28:6b:5c:ab:12:01\tUP\tup\t53:33.0\t53:48.0',
+  '60\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/16\t\t9c:66:97:a4:e1:81\tUP\tup\t52:46.0\t53:48.0',
+  '61\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/18\t\t9c:66:97:a4:e1:81\tUP\tdown\t09:28.0\t09:36.0',
+  '62\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/12\t\t9c:66:97:a4:e1:81\tUP\tup\t30:40.0\t53:46.0',
+  '63\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/13\t\t9c:66:97:a4:e1:81\tUP\tup\t51:59.0\t53:48.0',
+  '64\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/14\t\t9c:66:97:a4:e1:81\tUP\tup\t53:45.0\t53:49.0',
+  '65\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/15\t\t9c:66:97:a4:e1:81\tUP\tup\t53:20.0\t53:49.0',
+  '66\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/7\t\t28:6b:5c:ab:12:01\tUP\tup\t53:34.0\t53:48.0',
+  '67\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/8\ttv is connected\t28:6b:5c:ab:12:01\tUP\tup\t53:31.0\t53:48.0',
+  '68\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/6\t\t28:6b:5c:ab:12:01\tUP\tup\t53:33.0\t53:48.0',
+  '69\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/9\t\t9c:66:97:a4:e1:81\tUP\tup\t36:46.0\t53:46.0',
+  '70\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet1/1/1\tFabric Phy Uplink\t9c:66:97:a4:e1:81\tUP\tup\t53:49.0\t53:49.0',
+  '71\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/11\t\t9c:66:97:a4:e1:81\tUP\tdown\t01:28.0\t01:41.0',
+  '72\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/6\t\t9c:66:97:a4:e1:81\tUP\tup\t53:44.0\t53:49.0',
+  '73\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/5\t\t9c:66:97:a4:e1:81\tUP\tup\t53:11.0\t53:48.0',
+  '74\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/4\t\t9c:66:97:a4:e1:81\tUP\tup\t53:29.0\t53:48.0',
+  '75\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/3\t\t9c:66:97:a4:e1:81\tUP\tup\t53:40.0\t53:49.0',
+  '76\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet1/0/1\t\t9c:66:97:a4:e1:81\tUP\tup\t53:45.0\t53:49.0',
+  '77\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/4\t\t28:6b:5c:ab:12:01\tUP\tup\t53:20.0\t53:48.0',
+  '78\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tTenGigabitEthernet3/1/1\tTrunk Link to Spine\t28:6b:5c:ab:12:01\tUP\tup\t53:49.0\t53:49.0',
+  '79\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/3\t\t28:6b:5c:ab:12:01\tUP\tup\t53:22.0\t53:48.0',
+  '80\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/2\t\t28:6b:5c:ab:12:01\tUP\tdown\t11:04.0\t12:15.0',
+  '81\tCCS1N1F1FNR8AS1.cgv.nic.in\tSwitches\tCisco Catalyst 3850\t10.200.129.11\tGigabitEthernet3/0/1\t\t28:6b:5c:ab:12:01\tUP\tup\t53:41.0\t53:48.0',
+
+  // Rack FNR5 (Device: CCS3N1F3FNR5AS1.cgv.nic.in)
+  '101\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tTwentyFiveGigE3/1/2\tUplink Core 2\td0:72:dc:11:39:40\tUP\tup\t53:45.0\t53:48.0',
+  '102\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/30\tStorage Node A\t70:db:98:33:14:02\tUP\tup\t53:12.0\t53:48.0',
+  '103\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tTwentyFiveGigE3/1/1\tUplink Core 1\td0:72:dc:11:39:40\tUP\tup\t53:45.0\t53:48.0',
+  '104\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/32\tBackup Interface\t70:db:98:33:14:02\tUP\tdown\t04:10.0\t05:30.0',
+  '105\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/31\tCompute Host 4\t70:db:98:33:14:02\tUP\tup\t53:20.0\t53:48.0',
+  '106\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/25\tCompute Host 5\t70:db:98:33:14:02\tUP\tup\t53:30.0\t53:48.0',
+  '107\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/24\tCompute Host 6\t70:db:98:33:14:02\tUP\tup\t53:35.0\t53:48.0',
+  '108\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/27\tManagement Port\t70:db:98:33:14:02\tUP\tdown\t22:45.0\t23:10.0',
+  '109\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/26\tDatabase Replica\t70:db:98:33:14:02\tUP\tup\t53:40.0\t53:48.0',
+  '110\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/29\tWeb Server 1\t70:db:98:33:14:02\tUP\tup\t53:42.0\t53:48.0',
+  '111\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/28\tWeb Server 2\t70:db:98:33:14:02\tUP\tup\t53:42.0\t53:48.0',
+  '112\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/15\tServer Farm Port\t70:db:98:33:14:02\tUP\tup\t53:25.0\t53:48.0',
+  '113\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/14\tServer Farm Port\t70:db:98:33:14:02\tUP\tup\t53:25.0\t53:48.0',
+  '114\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/17\tConsole Gateway\t70:db:98:33:14:02\tUP\tdown\t09:12.0\t10:00.0',
+  '115\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/16\tMonitoring Tap\t70:db:98:33:14:02\tUP\tup\t53:18.0\t53:48.0',
+  '116\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/19\tStorage Node B\t70:db:98:33:14:02\tUP\tup\t53:40.0\t53:48.0',
+  '117\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/21\tCompute Host 7\t70:db:98:33:14:02\tUP\tup\t53:30.0\t53:48.0',
+  '118\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/18\tCompute Host 8\t70:db:98:33:14:02\tUP\tup\t53:32.0\t53:48.0',
+  '119\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/20\tCompute Host 9\t70:db:98:33:14:02\tUP\tup\t53:30.0\t53:48.0',
+  '120\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/23\tCompute Host 10\t70:db:98:33:14:02\tUP\tup\t53:20.0\t53:48.0',
+  '121\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/22\tTest Machine\t70:db:98:33:14:02\tUP\tdown\t18:20.0\t19:40.0',
+  '122\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/11\tSAN Switch 1\t70:db:98:33:14:02\tUP\tup\t53:35.0\t53:48.0',
+  '123\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/10\tSAN Switch 2\t70:db:98:33:14:02\tUP\tup\t53:35.0\t53:48.0',
+  '124\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/13\tCore Interconnect\t70:db:98:33:14:02\tUP\tup\t53:44.0\t53:48.0',
+  '125\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/12\tCore Interconnect 2\t70:db:98:33:14:02\tUP\tup\t53:44.0\t53:48.0',
+  '126\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/16\tSecurity Appliance\t70:db:98:33:14:02\tUP\tup\t53:10.0\t53:48.0',
+  '127\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/15\tFirewall Link A\t70:db:98:33:14:02\tUP\tup\t53:10.0\t53:48.0',
+  '128\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/18\tFirewall Link B\t70:db:98:33:14:02\tUP\tup\t53:12.0\t53:48.0',
+  '129\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/17\tOut of Band Mgmt\t70:db:98:33:14:02\tUP\tup\t53:12.0\t53:48.0',
+  '130\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet2/0/19\tLoad Balancer 1\t70:db:98:33:14:02\tUP\tup\t53:15.0\t53:48.0',
+  '131\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/24\tVirtualization Cluster\t70:db:98:33:14:02\tUP\tup\t53:48.0\t53:48.0',
+  '132\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tFortyGigabitEthernet3/1/1\tInter-rack Trunk\td0:72:dc:11:39:40\tUP\tup\t53:49.0\t53:49.0',
+  '133\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/23\tSAN Gateway\t70:db:98:33:14:02\tUP\tup\t53:48.0\t53:48.0',
+  '134\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/26\tHypervisor Node 1\t70:db:98:33:14:02\tUP\tup\t53:49.0\t53:48.0',
+  '135\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tGigabitEthernet3/0/25\tHypervisor Node 2\t70:db:98:33:14:02\tUP\tup\t53:49.0\t53:48.0',
+  '136\tCCS3N1F3FNR5AS1.cgv.nic.in\tSwitches\tCisco Catalyst 9300\t10.200.130.15\tFortyGigabitEthernet3/1/2\tSpine Trunk Link\td0:72:dc:11:39:40\tUP\tup\t53:49.0\t53:49.0',
+].join('\n');
